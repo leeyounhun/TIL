@@ -7,6 +7,8 @@
   - [WAS](#was)
   - [표기법](#%ED%91%9C%EA%B8%B0%EB%B2%95)
 - [JDBC](#jdbc)
+  - [개요](#%EA%B0%9C%EC%9A%94)
+  - [코딩 절차](#%EC%BD%94%EB%94%A9-%EC%A0%88%EC%B0%A8)
 
 <!-- /TOC -->
 # 1. JSP
@@ -40,3 +42,25 @@
 * Comments tag
   * <%-- 주석 --%>
 # 2. JDBC
+
+## 2.1 개요
+* Java DataBase Connectivity
+* java에서 데이터베이스에 접근 할 수 있게 해주는 API
+* java 소스코드 -> JDBC Interface(DriverManager) -> JDBC Driver -> DBMS 로 구성
+
+## 2.2 코딩 절차
+* Driver 로드
+  * DriverManager
+    * 데이터 원본에 JDBC Driver를 통하여 Connection을 만드는 역할
+    * Class.forName() 메소드를 통해 생성되며 예외처리 필수
+      * Class.forName("oracle.jdbc.driver.OracleDriver");
+    * 직접적인 객체 생성 불가능, DriverManager의 getConnection() 메소드 사용
+      * Connection refConn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "scott", "tiger");
+  * Connection
+    * 특정 데이터 원본과 연결된 커넥션을 나타냄
+    * Statement 객체를 생성할 때 createStatemt() 메소드 사용
+* DBMS 연결
+* Statement 생성
+* SQL 전송
+* 결과 받기
+* 닫기(객체 반환)
