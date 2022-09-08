@@ -56,10 +56,10 @@
       * Class.forName("oracle.jdbc.driver.OracleDriver");
     * 직접적인 객체 생성 불가능, DriverManager의 getConnection() 메소드 사용
       * Connection refConn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "scott", "tiger");
-  * Connection
-    * 특정 데이터 원본과 연결된 커넥션을 나타냄
-    * Statement 객체를 생성할 때 createStatemt() 메소드 사용
 * DBMS 연결
+  * Connection
+      * 특정 데이터 원본과 연결된 커넥션을 나타냄
+      * Statement 객체를 생성할 때 createStatemt() 메소드 사용
 * Statement 생성
 * SQL 전송
 * 결과 받기
