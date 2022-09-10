@@ -23,6 +23,10 @@
     * values(): HashMap의 모든 값을 Collection으로 반환
 
 ## 1.2 HashSet
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:CT.md
+>>>>>>> d30c245d153f817eb497e42088cf2df5cb91502d
 * Set(집합) 인터페이스를 구현한 컬렉션
   * 중복을 허용하지 않고, 순서대로 입력되지 않음
 * HashSet<Element> 이름 = new HashSet<>();
@@ -46,3 +50,12 @@
 * 재귀함수 호출, 인터럽트 처리, 깊이 우선 탐색(DFS)등 에서 주로 사용
 * Stack<Element> stack = new Stack<>();
 * push(value), pop(value), peek(value), contains(value), size(), empty(), clear()
+<<<<<<< HEAD
+=======
+=======
+  * Set(집합) 인터페이스를 구현한 컬렉션
+    * 중복을 허용하지 않고, 순서대로 입력되지 않음
+  * HashSet<제네릭> 이름 = new HashSet<>();
+  * add(value), remove(value), size(), clear(), contains(value), iterator(); 
+>>>>>>> d763e81a9eea21bc3b7ad10a4a59e316503f72d4:CT/CT.md
+>>>>>>> d30c245d153f817eb497e42088cf2df5cb91502d
