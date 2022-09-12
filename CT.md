@@ -8,6 +8,8 @@
 - [2. String](#2-string)
   - [2.1 자르기](#21-자르기)
 - [3. Stack](#3-stack)
+- [4. Queue](#4-queue)
+  - [4.1 Deque](#41-deque)
 
 <!-- /TOC -->
 # 1. 집합과 맵
@@ -23,10 +25,7 @@
     * values(): HashMap의 모든 값을 Collection으로 반환
 
 ## 1.2 HashSet
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD:CT.md
->>>>>>> d30c245d153f817eb497e42088cf2df5cb91502d
+
 * Set(집합) 인터페이스를 구현한 컬렉션
   * 중복을 허용하지 않고, 순서대로 입력되지 않음
 * HashSet<Element> 이름 = new HashSet<>();
@@ -42,20 +41,35 @@
     * int1 부터(포함) int2전 까지(미포함) 문자열 반환
 * split(char)
   * char을 기준으로 문자열 분할해서 Array로 반환
+  * 정규식 검사, 빈문자열 포함
+* StringToknizer(str, char)
+  * str을 char 기준으로 분할
+  * 정규식 검사가 아님.
+  * "[]," 식으로 구분자 여러개 사용 가능
   
 # 3. Stack
 * List 인터페이스를 상속받는 컬렉션
 * Queue와 함께 자바에서 사용되는 대표적인 자료 구조
+* 한쪽에서만 삽입과 삭제가 가능
 * 마지막의 추가된 데이터가 가장 먼저 나오는 후입선출(LIFO) 구조
 * 재귀함수 호출, 인터럽트 처리, 깊이 우선 탐색(DFS)등 에서 주로 사용
 * Stack<Element> stack = new Stack<>();
 * push(value), pop(value), peek(value), contains(value), size(), empty(), clear()
-<<<<<<< HEAD
-=======
-=======
-  * Set(집합) 인터페이스를 구현한 컬렉션
-    * 중복을 허용하지 않고, 순서대로 입력되지 않음
-  * HashSet<제네릭> 이름 = new HashSet<>();
-  * add(value), remove(value), size(), clear(), contains(value), iterator(); 
->>>>>>> d763e81a9eea21bc3b7ad10a4a59e316503f72d4:CT/CT.md
->>>>>>> d30c245d153f817eb497e42088cf2df5cb91502d
+
+# 4. Queue
+* Deque, BlockingDeque, BlockingQueue, TransferQueue 인터페이스가 Queue 인터페이스를 상속받는다
+* 한쪽에서는 삽입만, 한쪽에서는 삭제만 가능
+* 처음 추가된 데이터가 가장 먼저 나오는 선입선출(FIFO) 구조
+* BFS 알고리즘, 프로세스 관리, 대기 순서 관리 등 에서 주로 사용
+* Queue<Element> queue = new LinkedList<Element>(); (다른 자식들도 가능)
+* offer(value), poll(value), peek(value), contains(value), size(), empty(), clear()
+
+## 4.1 Deque
+* Double - Ended Queue
+* 한쪽에서만 삽입, 다른 한쪽에서만 삭제가 가능했던 큐와 달리 양쪽에서 삽입, 삭제가 가능
+* Deque 인터페이스는 Queue 인터페이스를 상속받는다.
+  * Deque의 구현 클래스에는 ArrayDeque, LinkedBlockingDeque, ConcurrentLinkedDeque, LinkedList가 있다.
+* 데이터의 삽입 삭제가 빠르고 앞, 뒤에서 삽입 삭제가 모두 가능하다
+* index 를 통해 임의의 원소에 바로 접근이 가능하고
+* 데이터를 앞, 뒤쪽에서 모두 삽입 삭제하는 과정이 필요한 경우, 데이터의 크기가 가변적일 때 사용
+* offer(value), offerFirst(value), offerLast(value), poll(value), pollFirst(value), pollLast(value), peekFirst(value), peekLast(value), peek(value), contains(value), size(), empty(), clear(), remove(), removeFirst(), removeLast()
