@@ -10,6 +10,7 @@
 - [3. Stack](#3-stack)
 - [4. Queue](#4-queue)
   - [4.1 Deque](#41-deque)
+- [5. Heap](#5-heap)
 
 <!-- /TOC -->
 # 1. 집합과 맵
@@ -73,3 +74,15 @@
 * index 를 통해 임의의 원소에 바로 접근이 가능하고
 * 데이터를 앞, 뒤쪽에서 모두 삽입 삭제하는 과정이 필요한 경우, 데이터의 크기가 가변적일 때 사용
 * offer(value), offerFirst(value), offerLast(value), poll(value), pollFirst(value), pollLast(value), peekFirst(value), peekLast(value), peek(value), contains(value), size(), empty(), clear(), remove(), removeFirst(), removeLast()
+
+# 5. Heap
+* 2진 트리의 일종
+* 반정렬 상태(느슨한 정렬 상태)의 트리
+* 중복값을 허용한다.
+* 우선순위 큐를 구현하는데 많이 사용
+* 부모 노드가 자식 노드보다 크냐 작냐에 따라 최대힙, 최소힙으로 구분
+* 보통 배열을 사용하며 편의를 위해 0번 인덱스는 사용하지 않음
+  * 1번 인덱스가 Root Node
+* 부모 노드의 인덱스가 N 이라면 왼쪽 자식 노드의 인덱스는 N * 2 오른쪽 자식 노드의 인덱스는 N * 2 + 1 을 가진다.
+* 삽입시 마지막 노드에 삽입한 후 부모와 값을 비교하면서 교체해간다.
+* 삭제시 루트노드를 삭제 후 마지막 노드를 루트 노드에 삽입하고 자식 노드와 값을 비교하면서 교체해 간다.
