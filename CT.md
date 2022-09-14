@@ -10,6 +10,7 @@
 - [3. Stack](#3-stack)
 - [4. Queue](#4-queue)
   - [4.1 Deque](#41-deque)
+  - [4.2 Priority Queue(우선순위 큐)](#42-priority-queue우선순위-큐)
 - [5. Heap](#5-heap)
 
 <!-- /TOC -->
@@ -75,6 +76,17 @@
 * 데이터를 앞, 뒤쪽에서 모두 삽입 삭제하는 과정이 필요한 경우, 데이터의 크기가 가변적일 때 사용
 * offer(value), offerFirst(value), offerLast(value), poll(value), pollFirst(value), pollLast(value), peekFirst(value), peekLast(value), peek(value), contains(value), size(), empty(), clear(), remove(), removeFirst(), removeLast()
 
+## 4.2 Priority Queue(우선순위 큐)
+* 일반적인 큐의 구조 FIFO(First In First Out)를 가지면서, 데이터가 들어온 순서대로 나가는 것이 아닌 우선순위가 높은 데이터가 먼저 나가는 자료구조
+* 우선순위 큐에 저장할 객체는 필수적으로 Comparable Interface를 구현해야한다.
+  * Comparable Interface는 compareTo() 메서드를 통해 객체 간의 순서를 비교할 수 있도록 해준다.
+    * Comparable Interface를 구현한 클래스는 각 인스턴스간 순서가 존재한다.
+    * 자바에서 같은 타입의 인스턴스를 서로 비교해야만 하는 클래스들은 모두 Comparable 인터페이스를 구현하고 있다.
+* Heap을 이용하여 구현하는 것이 일반적이다.
+  * 힙으로 구성되어 있기에 시간 복잡도는 O(NLogN)이다.
+* PriorityQueue<Element> priorityQueue = new PriorityQueue<>();(최소힙)
+* PriorityQueue<Element> priorityQueue = new PriorityQueue<>(Collections.reverseOrder());(최대힙)
+  
 # 5. Heap
 * 2진 트리의 일종
 * 반정렬 상태(느슨한 정렬 상태)의 트리

@@ -6,12 +6,20 @@
   - [1.1 개요](#11-개요)
     - [1.1.1 서블릿 컨테이너](#111-서블릿-컨테이너)
   - [1.2 Servlet 구동](#12-servlet-구동)
+  - [1.3 페이지 이동](#13-페이지-이동)
+    - [1.3.1 포워딩(forwarding) 기법](#131-포워딩forwarding-기법)
+    - [1.3.2 리다이렉트 방법](#132-리다이렉트-방법)
 - [2. JSP](#2-jsp)
   - [2.1 개요](#21-개요)
   - [2.2 표기법](#22-표기법)
 - [3. JDBC](#3-jdbc)
   - [3.1 개요](#31-개요)
   - [3.2 코딩 절차](#32-코딩-절차)
+- [4. 디자인 패턴](#4-디자인-패턴)
+  - [4.1 싱글톤(Singleton) 패턴](#41-싱글톤singleton-패턴)
+    - [4.1.1 개요](#411-개요)
+    - [4.1.2 사용례](#412-사용례)
+    - [4.1.3 사용 형식](#413-사용-형식)
 
 <!-- /TOC -->
 # 1. Servlet
@@ -49,9 +57,9 @@
   * 웹서버는 동적으로 생성된 결과를 올바른 위치에 반환한다.
 
 ## 1.2 Servlet 구동
-* Clint가 http 프로토콜 Requst -> Web Server
-* Web Server가 Requst -> WAS
-* WAS(서블릿 컨테이너)가 HttpServletRequest, HttpServletResponse 인터페이스 객체인 requst, response를 생성해서 service 메소드에 전달한다.
+* Clint가 http 프로토콜 Request -> Web Server
+* Web Server가 Request -> WAS
+* WAS(서블릿 컨테이너)가 HttpServletRequest, HttpServletResponse 인터페이스 객체인 request, response를 생성해서 service 메소드에 전달한다.
   * service() 메소드는 특정 HTTP 요청(GET, POST 등)을 처리하는 메서드 (doGet(), doPost() 등)를 호출한다.
     * 입력한 정보를 서버에 전송해주는 메소드
     * doGet
@@ -65,8 +73,32 @@
     * doPost
       * 중요한 데이터는 URL에 노출하지 않음
       * 입력한 값이 HTTP 헤더 메모리 영역에 저장
-* requst, response 객체 데이터로 응답 페이지를 작성한다. (WAS Response Clint)
+* request, response 객체 데이터로 응답 페이지를 작성한다. (WAS Response Clint)
 * destroy() 메소드는 보통 서버가 종료되었을 때, 서블릿의 내용이 변경되어 재 컴파일 될 때 호출된다.
+
+## 1.3 페이지 이동
+### 1.3.1 포워딩(forwarding) 기법
+* 페이지 주소(URL)은 바뀌지 않고 내용만 바뀐다.
+  * 웹 컨테이너(Web Container) 차원에서만 페이지 이동
+  * 클라이언트는 다른 페이지로 이동을 했는지 알 수 없다.
+* 페이지가 바뀌어도 request는 바뀌지 않으므로 요청에 속성을 설정해서 이동할 페이지로 값을 가져 갈 수 있다.
+* javax.servlet.RequestDispatcher 인터페이스를 사용해서 객체 생성
+  * request 객체의 getRequestDispatcher("이동할 페이지")메소드를 사용
+  * forward() 메소드를 호출해서 이동
+  * javax.servlet.RequestDispatcher rd = request.getRequestDispatcher("이동할 페이지");
+  * rd.forward(request, response);
+* request, response 객체를 계속해서 사용 가능
+  * 페이지 주소(URL)가 바뀌지 않았기 때문
+* 특정 URL에 대해 외부에 공개되지 않아야 하는 부분을 사용하거나 조회를 위해 사용
+
+### 1.3.2 리다이렉트 방법
+* 페이지 주소(URL)와 내용이 바뀐다.
+  * 추가적으로 발생한 처리 때문에 포워딩보다 느리다.
+* response.sendRedirect("이동할 페이지")
+* request, response 객체도 바뀌게 된다.
+* 최초 요청을 받은 첫 번째 URL에서 클라이언트에 Redirect할 두 번째 URL을 리턴하고, 클라이언트는 전혀 새로운 요청을 생성하여 두 번째 URL에 다시 요청을 보낸다.
+* 클라이언트의 요청에 따라 서버의 DB에 변화가 생기는 작업에 사용
+  * 요청을 중복으로 보내는 것을 방지
 
 # 2. JSP
 ## 2.1 개요
@@ -110,8 +142,7 @@
   * DriverManager
     * 데이터 원본에 JDBC Driver를 통하여 Connection을 만드는 역할
     * Class.forName() 메소드를 통해 생성되며 예외처리 필수
-      * Class.forName("oracle.jdbc.driver.OracleDriver");
-    
+      * Class.forName("oracle.jdbc.driver.OracleDriver");   
 * DBMS 연결
   * Connection 객체 생성
       * 특정 데이터 원본과 연결된 커넥션을 나타냄
@@ -129,6 +160,8 @@
       * ResultSet 타입으로 결과 반환
     * create 또는 drop, insert, delete, update와 같이 테이블의 내용을 변경하는 경우 executeUpdate(sql) 메소드 사용
       * INT 타입으로 결과 반환
+      * PreparedStatement 객체의 경우 
+        * count = rs.executeUpdate()
   * 결과 받기
     * ResultSet 인터페이스에는 질의 결과의 현재 행(row)을 가리키는 커서(cursor)라는 변수가 존재(배열의 인덱스와 유사)
       * 커서는 첫번째 이전 위치를 가지고 있음
@@ -139,3 +172,42 @@
       * getInt(1) = 커서가 가르키는 row에 첫번째 컬럼의 값을 인트로 가져온다
   * 닫기(객체 반환)
     * 생성된 Connection, Statement, ResultSet 객체를 생성된 역순으로 close()메소드를 사용하여 반환
+      * 힙 메모리에 생성된 객체의 구조가 1차원 배열 형식이기 때문
+
+# 4. 디자인 패턴
+## 4.1 싱글톤(Singleton) 패턴
+### 4.1.1 개요
+* 자바에서 가장 단순한 디자인 패턴중 하나
+* 하나의 클래스 만을 정의해서 사용(단독)
+* 생성 패턴의 일부
+  * 객체를 생성하는 가장 단순하고 편한 방법
+* 다른 클래스와의 관계가 존재하지 않음
+* 단일 객체만을 생성하는 단독 클래스가 포함
+  * 하나의 객체만을 생성
+
+### 4.1.2 사용례
+* JDBC DB 연결 객체 생성 전용 클래스로 정의
+  * Class.forName(): 드라이버 생성(로딩);
+  * getConnection(): 자바와 DB를 서로 연결
+  * 데이터 베이스 연괄 과정에서 시간을 절약
+* static 으로 객체를 생성(주소 고정)
+  * 하나의 객체만 관리하기 위해 사용
+
+
+### 4.1.3 사용 형식
+* 참조변수를 선언
+   * 기본 형식
+    * 참조변수 선언과 객체 생성을 동시에
+  * 응용 형식
+    * 참조변수 선언과 객체 생성을 분리
+      * if(생성 객체 == null){} 안에 객체 생성 관련 내용 작성
+      * 생성할 객체가 존재하면 새로운 객체를 생성하지 않음.
+  * static 제한자 필수
+    * 힙 메모리에 하나의 객체를 생성
+  * private 접근 제한자 사용
+    * 하나의 클래스 내부에서 사용
+    * 객체의 수를 1개로 제한
+* 기본 생성자를 private 접근 제한자로서 선언
+* setter 사용 불가능
+  * 현재 참조하는 객체의 주소를 유지 하기 위해서
+  * 메모리 공간의 낭비를 막기 위함
