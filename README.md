@@ -12,6 +12,7 @@
 - [2. JSP](#2-jsp)
   - [2.1 개요](#21-개요)
   - [2.2 표기법](#22-표기법)
+  - [2.2.1 링크 이동](#221-링크-이동)
 - [3. JDBC](#3-jdbc)
   - [3.1 개요](#31-개요)
   - [3.2 코딩 절차](#32-코딩-절차)
@@ -70,6 +71,7 @@
       * 기본 명령어
         * response.getWriter().append("Served at: ").append(request.getContextPath());
         * 실행 된 후의 결과 : 웹 브라우저에 "Served at: /프로젝트명"을 출력
+      * a태그는 get 방식만 표현 가능
     * doPost
       * 중요한 데이터는 URL에 노출하지 않음
       * 입력한 값이 HTTP 헤더 메모리 영역에 저장
@@ -131,6 +133,12 @@
 * Comments tag
   * <%-- 주석 --%>
 
+## 2.2.1 링크 이동
+* <a href="이동할 페이지.jsp?객체=값" id=""><a>
+  * 이동할 페이지로 이동후 객체를 전달
+  * doGet 방식
+  * 받는 쪽 페이지 에서는 E 객체 = request.getParameter("객체명");을 사용하여 값 전달 받음
+
 # 3. JDBC
 ## 3.1 개요
 * Java DataBase Connectivity
@@ -160,7 +168,6 @@
       * ResultSet 타입으로 결과 반환
     * create 또는 drop, insert, delete, update와 같이 테이블의 내용을 변경하는 경우 executeUpdate(sql) 메소드 사용
       * INT 타입으로 결과 반환
-      * PreparedStatement 객체의 경우 
         * count = rs.executeUpdate()
   * 결과 받기
     * ResultSet 인터페이스에는 질의 결과의 현재 행(row)을 가리키는 커서(cursor)라는 변수가 존재(배열의 인덱스와 유사)
