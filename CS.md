@@ -26,6 +26,12 @@
   - [5.2 특징](#52-특징)
   - [5.3 명령어](#53-명령어)
   - [5.4 브랜치 전략](#54-브랜치-전략)
+- [6. Hash Table](#6-hash-table)
+  - [6.1 개요](#61-개요)
+  - [6.2 Hash Function](#62-hash-function)
+  - [6.3 Resolve Conflict](#63-resolve-conflict)
+    - [6.3.1 Open Address 방식 (개방주소법)](#631-open-address-방식-개방주소법)
+    - [6.3.2 Separate Chaining 방식 (분리 연결법)](#632-separate-chaining-방식-분리-연결법)
 
 <!-- /TOC -->
 # 1. OOP
@@ -241,3 +247,35 @@
   * Production: 제품을 배포하는 브랜치
   * production 브랜치는 오직 배포만을 담당한다.
   * pre-production: production 브랜치로 merge 하기  전에 테스트를 수행하는 브랜치
+
+# 6. Hash Table
+## 6.1 개요
+* 해시함수를 사용하여 변환한 값을 색인(index)으로 삼아 키(key)와 데이터(value)를 저장하는 자료구조
+* 내부적으로 배열을 사용하여 데이터를 저장하기 때문에 빠른 검색 속도를 갖는다.
+
+## 6.2 Hash Function
+* 임의의 길이의 값을 고정된 크기의 값으로 변환하는 함수
+* 이 함수에 의해 반환된 데이터의 고유 숫자 값을 hashcode라고 한다.
+* 어설픈 hash function을 통해서 key 값들을 결정한다면 동일한 값이 도출될 수가 있다. 
+  *  이를 Collision 이라고 한다.
+* hash function를 무조건 1:1 로 만드는 것보다 Collision 을 최소화하는 방향으로 설계한다.
+  * 1:1로 만들면 array 와 다를바 없고  hash 를 hash 답게 사용하지 못하도록 한다.
+
+## 6.3 Resolve Conflict
+### 6.3.1 Open Address 방식 (개방주소법)
+* 해시 충돌이 발생하면 다른 해시 버킷에 해당 자료를 삽입하는 방식
+* 해시 충돌 이 발생하면 데이터를 저장할 장소를 찾아 헤맨다. 최악의 경우 비어있는 버킷을 찾지 못하고 탐색을 시작한 위치까지 되돌아 올 수 있다. 
+해시 버킷을 채운 밀도가 높아질수록 최악 발생 빈도가 늘어난다.
+* Linear Probing 순차적으로 탐색하며 비어있는 버킷을 찾을 때까지 계속 진행된다.
+* Quadratic probing 2 차 함수를 이용해 탐색할 위치를 찾는다.
+* Double hashing probing 하나의 해쉬 함수에서 충돌이 발생하면 2 차 해쉬 함수를 이용해 새로운 주소를 할당한다. 
+* Separate Chaining에 비해 캐시 효율이 높다.
+
+### 6.3.2 Separate Chaining 방식 (분리 연결법)
+* 연결 리스트를 사용하는 방식
+  * 각각의 버킷(bucket)들을 연결리스트(Linked List)로 만들어 충돌 이 발생하면 해당 버킷 의 list에 추가하는 방식이다. 
+  * 연결 리스트의 특징을 그대로 이어받아 삭제 또는 삽입이 간단하다.
+  * 작은 데이터들을 저장할 때 연결 리스트 자체의 오버헤드가 부담이 된다.
+  * 버킷을 계속해서 사용하는 Open Address 방식에 비해 테이블의 확장을 늦출 수 있다.
+* Tree를 사용하는 방식 (Red-Black Tree)
+  * 데이터의 개수가 많다면 연결 리스트가 아닌 Tree를 사용하여 저장한다.
