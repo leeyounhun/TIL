@@ -32,6 +32,8 @@
   - [6.3 Resolve Conflict](#63-resolve-conflict)
     - [6.3.1 Open Address 방식 (개방주소법)](#631-open-address-방식-개방주소법)
     - [6.3.2 Separate Chaining 방식 (분리 연결법)](#632-separate-chaining-방식-분리-연결법)
+- [7. TCP](#7-tcp)
+  - [7.1 TCP 3 Way-Handshake](#71-tcp-3-way-handshake)
 
 <!-- /TOC -->
 # 1. OOP
@@ -279,3 +281,11 @@
   * 버킷을 계속해서 사용하는 Open Address 방식에 비해 테이블의 확장을 늦출 수 있다.
 * Tree를 사용하는 방식 (Red-Black Tree)
   * 데이터의 개수가 많다면 연결 리스트가 아닌 Tree를 사용하여 저장한다.
+
+# 7. TCP
+## 7.1 TCP 3 Way-Handshake
+* 3-way Handshaking은 양쪽 모두 데이터를 전송할 준비가 되었다는 것을 보장하고, 실제로 전달이 시작하기전에 한쪽이 다른 쪽이 준비되었다는 것을 알 수 있도록 한다.
+  * 클라이언트가 SYN 플래그를 보내 SYN_SENT상태가 되고 서버의 답변을 기다리게 된다.
+  * 서버는 답변으로 SYN+ACK 플래그를 보내어 통신이 가능하다는 답변을 하고 SYN_RECVED 상태가 된다.
+  * 통신가능 답변을 받은 클라이언트는 ACK 플래그를 보내어 자신도 통신 준비가 되었다고 알리고, ESTABLESHED 상태가 된다.
+  * 클라이언트의 통신 준비완료 메시지를 받은 서버도 ESTABLESHED상태가 되며, 통신을 위한 세션이 맺어지게 된다.
