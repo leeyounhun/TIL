@@ -34,6 +34,7 @@
     - [6.3.2 Separate Chaining 방식 (분리 연결법)](#632-separate-chaining-방식-분리-연결법)
 - [7. TCP](#7-tcp)
   - [7.1 TCP 3 Way-Handshake](#71-tcp-3-way-handshake)
+  - [7.2 TCP 4 Way-Handshake](#72-tcp-4-way-handshake)
 
 <!-- /TOC -->
 # 1. OOP
@@ -289,3 +290,20 @@
   * 서버는 답변으로 SYN+ACK 플래그를 보내어 통신이 가능하다는 답변을 하고 SYN_RECVED 상태가 된다.
   * 통신가능 답변을 받은 클라이언트는 ACK 플래그를 보내어 자신도 통신 준비가 되었다고 알리고, ESTABLESHED 상태가 된다.
   * 클라이언트의 통신 준비완료 메시지를 받은 서버도 ESTABLESHED상태가 되며, 통신을 위한 세션이 맺어지게 된다.
+* Client --- SYN M ---> Server
+* Client <--- SYN N, ACK M + 1 --- Server
+* Client --- ACK N + 1 ---> Server
+
+## 7.2 TCP 4 Way-Handshake
+* 연결을 종료하기 위해 사용한다.
+* 클라이언트가 연결을 종료하겠다는 FIN 플래그를 전송한다.
+* 서버는 클라이언트의 요청(FIN)을 받고 확인 메시지(ACK)를 전송한다.
+  * 데이터를 모두 보낼 때 까지 TIME_OUT 상태가 된다.
+* 데이터를 모두 보내고 통신이 종료되면 클라이언트에서 FIN 플래그를 전송한다.
+* 클라이언트는 FIN 메시지를 받고 ACK 메시지를 전송한다.
+* ACK 메시지를 받은 서버는 소켓 연결을 닫는다.
+* 클라이언트는 아직 다 받지 못한 데이터가 있을 것을 대비해 일정 시간 세션을 남겨둔다.
+* Client --- FIN ---> Server
+* Client <--- ACK --- Server
+* Client <--- FIN --- Server
+* Client --- ACK ---> Server
