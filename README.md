@@ -684,8 +684,14 @@
 ## 6.7 Spring JDBC Template
 ### 6.7.1 개요
 * Spring에서 제공하는 class
+* JDBC API에서 반복되는 코드를 거의 제거해 주나 SQL은 직접 작성해야 한다.
 * 데이터베이스와 통신을 위해 하는 드라이버 로딩, DB연결, 자원 해제 같은 작업을 스프링 프레임워크에 맡기고, 개발자는 쿼리문을 가지고 질의 응답만을 할 수 있다.
-* 데이터베이스 연결과 관련된 정보를 가지고 있는 DataSource 클래스는 스프링 또는 c3p0에서 제공하는 클래스를 이용할 수 있다.
+* 데이터베이스 연결과 관련된 정보를 가지고 있는 DataSource 클래스는 스프링 또는 c3p0에서 제공하는 클래스를 이용할 수 있다. 
+  * private final JdbcTemplate jdbcTemplate;
+  @Autowired
+  public JdbcTemplate(DataSource dataSource) {
+    jdbcTemplate = new JdbcTemplate(dataSource);
+  }
 * JdbcTemplate를 사용하기 위해선 레파지토리 의존 설정(pom.xml) 을 미리 해주어야 한다.
 
 ### 6.7.2 커넥션 풀
@@ -694,10 +700,15 @@
 * 대표적인 커넥션풀을 지원하는 오픈소스는 아파치 DBCP와 c3p0가 있으며 spring, mybatis, hibernate 등과 통합되어 DataSource를 구성하여 사용한다.
 
 ### 6.7.3 사용법
-* DAO
 * queryForObject
+  * SQL 쿼리를 사용 할 때 사용
+  * Object jdbcTemplate.queryForObject(SQL구문, 반환 타입, 인자);
+  * queryForObject의 반환형은 기본 데이터형만 가능
 * RowMapper 인터페이스
-
+  * RowMapper를 사용하면 원하는 형태의 결과값을 반환할 수 있다.
+  * mapRow 메소드는 ResultSet을 사용한다.
+    * User mapRow(ResultSet rs, int count);
+    * ResultSet에 값을 담아와서 User 객체에 저장하는 것을 count만큼 반복한다.
 # 7. XML
 ## 7.1 개요
 * 웹에서 구조화한 문서를 표현하고 전송하도록 설계한 마크업 언어
