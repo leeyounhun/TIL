@@ -56,6 +56,10 @@
   - [7.1 개요](#71-개요)
 - [8. Mybatis](#8-mybatis)
   - [8.1 개요](#81-개요)
+  - [8.2 사용법](#82-사용법)
+    - [8.2.1 Session](#821-session)
+    - [8.2.2 매퍼 설정 파일(config)](#822-매퍼-설정-파일config)
+    - [8.2.3 Mapper XML 파일](#823-mapper-xml-파일)
 
 <!-- /TOC -->
 # 1. Servlet
@@ -709,6 +713,7 @@
   * mapRow 메소드는 ResultSet을 사용한다.
     * User mapRow(ResultSet rs, int count);
     * ResultSet에 값을 담아와서 User 객체에 저장하는 것을 count만큼 반복한다.
+
 # 7. XML
 ## 7.1 개요
 * 웹에서 구조화한 문서를 표현하고 전송하도록 설계한 마크업 언어
@@ -723,4 +728,74 @@
 # 8. Mybatis
 ## 8.1 개요
 * 데이터의 CRUD를 보다 편하게 하기 위해 xml로 구조화한 Mapper 설정 파일을 통해서 JDBC를 구현한 영속성 프레임워크
+  * SQL을 별도 파일(mapper.xml)로 분리한다.
+  * 유지보수와 재사용이 용이하다.
 * 기존 JDBC를 통해 구현하던 코드의 파라매터 설정 및 결과 매핑을 xml설정을 통해 쉽고 간단하게 구현할 수 있다.
+  * sql 실행 결과를 Map 객체에 매핑한다.
+    * sql 구문과 객체를 연결하는것을 매핑이라 한다.
+  * 매핑 작업을 자동으로 수행된다.
+* 데이터베이스 레코드에 원시타입과 Map 인터페이스 그리고 자바 POJO 를 설정해서 매핑하기 위해 XML과 애노테이션을 사용할 수 있다.
+* 데이터소스 기능과 트랜잭션 처리 기능을 제공한다.
+
+## 8.2 사용법
+* 마이바티스를 사용하기 위해선 mybatis-x.x.x.jar 파일을 클래스패스에 두거나 메이븐 dependency를 설정해야 한다.
+* 마이바티스가 제공하는 대부분의 기능은 XML을 통해 매핑 기법을 사용한다. 
+* 한 개의 매퍼 XML 파일에는 많은 수의 구문을 매핑할 수 있다.
+* DTO 파일과 DAO 파일(java), Config파일과 Mapper파일(xml)을 사용한다
+
+### 8.2.1 Session
+* 모든 마이바티스 애플리케이션은 SqlSessionFactory 인스턴스를 사용한다.
+* Session 클래스는 CRUD를 위한 다양한 메서드를 제공한다.
+* 세션을 한번 생성하면 매핑구문을 실행하거나 커밋 또는 롤백을 하기 위해 세션을 사용할수 있다. 
+* SqlSessionFactoryBuilder는 XML설정파일에서 SqlSessionFactory인스턴스를 생성한다.
+* SqlSession 은 데이터베이스에 대해 SQL명령어를 실행하기 위해 필요한 모든 메소드를 가지고 있다.
+* 마이바티스는 클래스패스와 다른 위치에서 자원을 로드하는 것으로 좀더 쉽게 해주는 Resources 라는 유틸성 클래스를 가지고 있다.
+  * String resource = "config.xml";
+InputStream inputStream = Resources.getResourceAsStream(resource);
+SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+* 생성된 SqlSession 인스턴스를 통해 SQL 구문을 실행할 수 있다. 
+  * List selectList(query_id)	id에 대한 select문을 실행한 후 레코드를 List로 반환한다.
+  * List selectList(query_id, '조건')	id에 대한 select문을 실행하면서 조건(쿼리문에서 사용할 인자)를 전달한다.
+  * T selectOne(query_id)	id에 대한 select문을 실행한 후 한개의 레코드를 지정한 타입으로 반환한다.
+  * T selectOne(query_id, '조건')	id에 대한 select문을 실행하면서 조건(쿼리문에서 사용할 인자)를 전달한다.
+
+### 8.2.2 매퍼 설정 파일(config)
+* 마이바티스 XML 설정파일은 다양한 설정과 프로퍼티를 가진다.
+* configuration
+  properties
+  * settings
+  * typeAliases
+  * typeHandlers
+  * objectFactory
+  * plugins
+  * environments
+    * environment
+      * transactionManager
+      * dataSource
+  * databaseIdProvider
+  * mappers
+
+### 8.2.3 Mapper XML 파일
+* cache - 해당 네임스페이스을 위한 캐시 설정
+* cache-ref - 다른 네임스페이스의 캐시 설정에 대한 참조
+* resultMap - 데이터베이스 결과데이터를 객체에 로드하는 방법을 정의하는 엘리먼트
+  * 복잡한 결과 매핑을 간편하게 만들어주기 위해 만들어진 태그다.
+* sql - 다른 구문에서 재사용하기 위한 SQL 구문
+* insert - 매핑된 INSERT 구문.
+* update - 매핑된 UPDATE 구문.
+* delete - 매핑된 DELEETE 구문.
+* select - 매핑된 SELECT 구문.
+  * 대부분의 애플리케이션은 데이터를 수정하기보다는 조회하는 기능이 많기 때문에 마이바티스는 데이터를 조회하고 그 결과를 매핑하는데 집중하고 있다.
+  * 각각의 구문이 처리하는 방식에 대해 세부적으로 설정하도록 많은 속성을 설정할 수 있다.
+    * id - 구문을 찾기 위해 사용될 수 있는 네임스페이스내 유일한 구분자
+    * parameterType - 구문에 전달될 파라미터의 패키지 경로를 포함한 전체 클래스명이나 별칭
+    * resultType - 이 구문에 의해 리턴되는 클래스명 전체 또는 alias를 입력, 즉 매핑하려는 자바 클래스의 전체 경로를 입력한다.
+    * resultMap - 외부 resultMap 선언 당시 참조로 사용한 이름을 입력한다. 사용하면 자동으로 매핑된다.
+    * flushCache - 이 값을 true 로 셋팅하면 구문이 호출될때마다 캐시가 지워진다. 디폴트는 false
+    * useCache - 이 값을 true 로 셋팅하면 구문의 결과가 캐시된다. 디폴트는 true.
+    * timeout - 예외가 던져지기 전에 데이터베이스의 요청 결과를 기다리는 최대시간을 설정한다.
+    * fetchSize - 지정된 수만큼의 결과를 리턴하도록 하는 드라이버 힌트 형태의 값이다
+    * statementType - STATEMENT, PREPARED, CALLABLE 중 하나를 선택할 수 있다. 마이바티스에게 Statement, PreparedStatement 또는 CallableStatement를 사용하게 한다. 디폴트는 PREPARED.
+    * resultSetType - FORWARD_ONLY, SCROLL_SENSITIVE, SCROLL_INSENSITIVE, DEFAULT중 하나를 선택할 수 있다.
+    * databaseId - 설정된 databaseIdProvider가 있는 경우 마이바티스는 databaseId 속성이 없는 모든 구문을 로드하거나 일치하는 databaseId와 함께 로드된다
+    * resultOrdered - 결과를 조회하는 구문에서만 적용이 가능하다. true로 설정하면 내포된 결과를 가져오거나 새로운 주요 결과 레코드를 리턴할때 함께 가져오도록 한다. 이전의 결과 레코드에 대한 참조는 더 이상 발생하지 않는다.
