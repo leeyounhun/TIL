@@ -52,14 +52,15 @@
     - [6.7.1 개요](#671-개요)
     - [6.7.2 커넥션 풀](#672-커넥션-풀)
     - [6.7.3 사용법](#673-사용법)
-- [7. XML](#7-xml)
+  - [6.8 Spring Transaction](#68-spring-transaction)
+  - [6.9 XML](#69-xml)
+- [7. Mybatis](#7-mybatis)
   - [7.1 개요](#71-개요)
-- [8. Mybatis](#8-mybatis)
-  - [8.1 개요](#81-개요)
-  - [8.2 사용법](#82-사용법)
-    - [8.2.1 Session](#821-session)
-    - [8.2.2 매퍼 설정 파일(config)](#822-매퍼-설정-파일config)
-    - [8.2.3 Mapper XML 파일](#823-mapper-xml-파일)
+  - [7.2 사용법](#72-사용법)
+    - [7.2.1 Session](#721-session)
+    - [7.2.2 매퍼 설정 파일(config)](#722-매퍼-설정-파일config)
+    - [7.2.3 Mapper XML 파일](#723-mapper-xml-파일)
+  - [7.3 mybatis-spring](#73-mybatis-spring)
 
 <!-- /TOC -->
 # 1. Servlet
@@ -714,8 +715,19 @@
     * User mapRow(ResultSet rs, int count);
     * ResultSet에 값을 담아와서 User 객체에 저장하는 것을 count만큼 반복한다.
 
-# 7. XML
-## 7.1 개요
+## 6.8 Spring Transaction
+* 스프링에서는 트랜잭션을 처리하는 방법을 2가지 제공해준다.
+* 직접 코드 구현 방식
+  * TransactionTemplate
+  * 직접 PlatformTransactionManager 구현하기.
+  * 트랜잭션 관리 부분이 비즈니스 로직과 함께 위치하기 때문에 자주 쓰이지 않는다.
+* 선언적 방식
+  * 트랜잭션 처리를 컨테이너가 자동으로 처리하도록 설정할 수 있다.
+  * AOP가 사용된다.
+    * AOP를 이용한 트랜잭션을 분리한다.
+  * xml이나 @Transactional 어노테이션을 사용한다.
+
+## 6.9 XML
 * 웹에서 구조화한 문서를 표현하고 전송하도록 설계한 마크업 언어
   * 문서의 본문 내용 의외에 첨가되는 부가적인 정보를 기술하는 언어
   * HTML, XML 등
@@ -725,8 +737,8 @@
   * W3C(World Wide Wed Consortium)에서 XML을 표준화 한다.
 * HTML과 다르게 보안과 제한사항을 추가할 수 있다.
 
-# 8. Mybatis
-## 8.1 개요
+# 7. Mybatis
+## 7.1 개요
 * 데이터의 CRUD를 보다 편하게 하기 위해 xml로 구조화한 Mapper 설정 파일을 통해서 JDBC를 구현한 영속성 프레임워크
   * SQL을 별도 파일(mapper.xml)로 분리한다.
   * 유지보수와 재사용이 용이하다.
@@ -737,13 +749,13 @@
 * 데이터베이스 레코드에 원시타입과 Map 인터페이스 그리고 자바 POJO 를 설정해서 매핑하기 위해 XML과 애노테이션을 사용할 수 있다.
 * 데이터소스 기능과 트랜잭션 처리 기능을 제공한다.
 
-## 8.2 사용법
+## 7.2 사용법
 * 마이바티스를 사용하기 위해선 mybatis-x.x.x.jar 파일을 클래스패스에 두거나 메이븐 dependency를 설정해야 한다.
 * 마이바티스가 제공하는 대부분의 기능은 XML을 통해 매핑 기법을 사용한다. 
 * 한 개의 매퍼 XML 파일에는 많은 수의 구문을 매핑할 수 있다.
 * DTO 파일과 DAO 파일(java), Config파일과 Mapper파일(xml)을 사용한다
 
-### 8.2.1 Session
+### 7.2.1 Session
 * 모든 마이바티스 애플리케이션은 SqlSessionFactory 인스턴스를 사용한다.
 * Session 클래스는 CRUD를 위한 다양한 메서드를 제공한다.
 * 세션을 한번 생성하면 매핑구문을 실행하거나 커밋 또는 롤백을 하기 위해 세션을 사용할수 있다. 
@@ -759,7 +771,7 @@ SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(input
   * T selectOne(query_id)	id에 대한 select문을 실행한 후 한개의 레코드를 지정한 타입으로 반환한다.
   * T selectOne(query_id, '조건')	id에 대한 select문을 실행하면서 조건(쿼리문에서 사용할 인자)를 전달한다.
 
-### 8.2.2 매퍼 설정 파일(config)
+### 7.2.2 매퍼 설정 파일(config)
 * 마이바티스 XML 설정파일은 다양한 설정과 프로퍼티를 가진다.
 * configuration
   properties
@@ -772,10 +784,12 @@ SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(input
     * environment
       * transactionManager
       * dataSource
+        * 프로그램에서 사용할 DB관련 정보
+        * 
   * databaseIdProvider
   * mappers
 
-### 8.2.3 Mapper XML 파일
+### 7.2.3 Mapper XML 파일
 * cache - 해당 네임스페이스을 위한 캐시 설정
 * cache-ref - 다른 네임스페이스의 캐시 설정에 대한 참조
 * resultMap - 데이터베이스 결과데이터를 객체에 로드하는 방법을 정의하는 엘리먼트
@@ -799,3 +813,9 @@ SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(input
     * resultSetType - FORWARD_ONLY, SCROLL_SENSITIVE, SCROLL_INSENSITIVE, DEFAULT중 하나를 선택할 수 있다.
     * databaseId - 설정된 databaseIdProvider가 있는 경우 마이바티스는 databaseId 속성이 없는 모든 구문을 로드하거나 일치하는 databaseId와 함께 로드된다
     * resultOrdered - 결과를 조회하는 구문에서만 적용이 가능하다. true로 설정하면 내포된 결과를 가져오거나 새로운 주요 결과 레코드를 리턴할때 함께 가져오도록 한다. 이전의 결과 레코드에 대한 참조는 더 이상 발생하지 않는다.
+
+## 7.3 mybatis-spring
+* MyBatis를 Spring Framework에 녹여내 좀 더 쉽게 사용하고자하는 연동 모듈
+* 마이바티스로 하여금 스프링 트랜잭션에 쉽게 연동되도록 처리한다.
+* SqlSessionFactoryBean과 SqlSession을 Spring Framework의 Bean으로 등록하여 관리한다.
+* 마이바티스 예외를 스프링의 DataAccessException로 변환하기도 하고 마이바티스, 스프링 또는 마이바티스 스프링 연동모듈에 의존성을 없애기도 한다.
