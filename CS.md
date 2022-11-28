@@ -35,6 +35,9 @@
 - [7. TCP](#7-tcp)
   - [7.1 TCP 3 Way-Handshake](#71-tcp-3-way-handshake)
   - [7.2 TCP 4 Way-Handshake](#72-tcp-4-way-handshake)
+- [8. WAS와 Web Server](#8-was와-web-server)
+  - [8.1 WAS](#81-was)
+  - [8.2 Web Server](#82-web-server)
 
 <!-- /TOC -->
 # 1. OOP
@@ -307,3 +310,21 @@
 * Client <--- ACK --- Server
 * Client <--- FIN --- Server
 * Client --- ACK ---> Server
+
+# 8. WAS와 Web Server
+
+## 8.1 WAS
+* DB 조회나 여러 로직 처리를 요구하는 동적인 컨텐츠를 제공하기 위해 만들어진 어플리케이션 서버
+* HTTP를 통해 서로 다른 애플리케이션이 서로 통신하는 데 사용되는 미들웨어
+* 사실상 웹 컨테이너 혹은 서블릿 컨테이너와 동일하게 취급된다
+* Web Server의 기능들을 구조적으로 분리하여 처리하고자 사용한다.
+* 주로 DB서버와 같이 수행된다.
+* 여러개의 트랜잭션을 관리할 수 있다.
+* 업무를 처리하는 비즈니스 로직을 수행한다.
+* Tomcat, JBoss 등
+
+## 8.2 Web Server
+* 클라이언트로부터 HTTP 요청을 받아 정적인 컨텐츠를 제공하는 프로그램
+* HTTP 프로토콜을 기반으로 하여 클라이언트의 요청을 서비스한다.
+* WAS가 Web Server의 기능도 할 수 있지만 서버 부하 방지와 보안, 배포 및 유지보수의 편의성을 위해 서로 분리한다.
+* IIS, apache 등
