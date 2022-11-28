@@ -63,6 +63,11 @@
     - [7.2.2 매퍼 설정 파일(config)](#722-매퍼-설정-파일config)
     - [7.2.3 Mapper XML 파일](#723-mapper-xml-파일)
   - [7.3 mybatis-spring](#73-mybatis-spring)
+- [8. TDD (Test Driven Development)](#8-tdd-test-driven-development)
+  - [8.1 JUnit](#81-junit)
+    - [8.1.1 Annotation](#811-annotation)
+  - [8.2 스프링 부트가 제공하는 어노테이션](#82-스프링-부트가-제공하는-어노테이션)
+  - [8.3 JaCoCo(Java Code Coverage)](#83-jacocojava-code-coverage)
 
 <!-- /TOC -->
 # 1. Servlet
@@ -840,3 +845,47 @@ SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(input
 * 마이바티스로 하여금 스프링 트랜잭션에 쉽게 연동되도록 처리한다.
 * SqlSessionFactoryBean과 SqlSession을 Spring Framework의 Bean으로 등록하여 관리한다.
 * 마이바티스 예외를 스프링의 DataAccessException로 변환하기도 하고 마이바티스, 스프링 또는 마이바티스 스프링 연동모듈에 의존성을 없애기도 한다.
+
+# 8. TDD (Test Driven Development)
+* 테스트 주도 개발
+* Ask(질문): 테스트 작성으르 통해 시스템에 질문(RED)
+* Respond(응답): 테스트를 통과하는 코드를 작성해서 질문에 대답(Green)
+* Refine(정제): 아이디어를 통합하고 불필요한 것은 제거하고, 모호한 것은 명확히 해서 대답을 정제(Refactor)
+* Repeat(반복): 다음 질문을 통해 대화를 계속 진행
+
+## 8.1 JUnit
+* 자바 언어용 단위 테스트 프레임 워크
+  * 단위 테스트: 메소드, 함수 단위의 테스트
+* 어노테이션 기반 테스트 지원
+* Assert 메소드를 통해서 테스트 케이스의 수행 결과를 확인 가능
+* 크게 Jupiter, Platfrom, Vintage 모듈로 구성
+  * Jupiter: TestEngin API 구현체, JUnit 5를 구현
+  * Platfrom: test를 실행하는 뼈대, 각종 IDE 연동
+  * Vintage: TestEngin 구현체, JUnit 이전버전을 구현
+* Spring boot는 기본적으로 JUnit을 사용하기 위한 설정이 되어있음
+
+### 8.1.1 Annotation
+* @Test: 테스트용 메소드를 표현
+* @BeforEach: 테스트 메소드가 동작하기 전 실행되는 메소드를 표현
+* @AfterEach: 테스트 메소드가 동작한 후 실행되는 메소드를 표현
+* @BeforeAll: 테스트가 동작하기 전 한번만 실행되는 메소드를 표현, Static 처리가 필요
+* @AfterAll: 테스트가 동작한 후 한번만 실행되는 메소드를 표현, Static 처리가 필요
+
+## 8.2 스프링 부트가 제공하는 어노테이션
+* @SpringBootTest
+  * 통합 테스트를 위한 환경을 준비해준다.
+  * 모든 빈들을 스캔하고 Application Context를 생성하여 테스트를 실행한다.
+  * properties, args, classes, webEnvironment를 추가할 수 있다.
+  * 단위 테스트가 아닌 통합 테스트
+* @WebMvcTest
+  * 특정 컨트롤러를 테스트할 때 사용한다.
+  * Application Context를 완전하게 생성하지 않고 테스트를 실행한다.
+  * Application Context를 생성할 때 컨트롤러와 연관된 빈들만을 제한적으로 찾아서 등록한다.
+  * 해당 컨트롤러가 의존하는 Bean이 있다면 @MockBean이나 @SpyBean을 사용해 가짜 객체을 등록해줘야 한다.
+  * 단위 테스트가 아닌 슬라이스 테스트(Application Context가 준비된다)
+
+## 8.3 JaCoCo(Java Code Coverage)
+* 자바 코드 커버리지를 체크하는 데에 사용되는 오픈소스 라이브러리
+* Line, Branch Coverage를 제공한다.
+* 코드 커버리지 결과를 파일로 저장할 수 있다.
+* 개인이 설정한 커버리지 기준을 만족하는지 확인할 수 있다.
